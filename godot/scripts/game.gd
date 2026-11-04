@@ -119,7 +119,7 @@ func _spawn_enemies() -> void:
 	for i in range(4):
 		var enemy := ValleyEnemy.new()
 		enemy.name = "Shadow Raider %d" % (i + 1)
-				enemy.player = player
+		enemy.player = player
 		enemy.position = Vector3(-6.0 + float(i) * 4.0, 0.2, -5.0 - float(i % 2) * 2.0)
 		_make_actor_mesh(enemy, Color(0.25, 0.19, 0.24), 1.8)
 		add_child(enemy)
