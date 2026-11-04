@@ -6,37 +6,32 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private bool destroyOnDefeat = true;
     [SerializeField] private Rigidbody body;
 
-    private int currentHealth;
-    private bool defeated;
+    public int CurrentHealth { get; private set; }
+    public int MaxHealth => maxHealth;
+    public bool IsDefeated { get; private set; }
 
     private void Awake()
     {
-        currentHealth = Mathf.Max(1, maxHealth);
+        CurrentHealth = Mathf.Max(1, maxHealth);
         if (body == null) body = GetComponent<Rigidbody>();
     }
 
-    public void TakeDamage(int amount)
-    {
-        TakeDamage(amount, Vector3.zero, 0f);
-    }
+    public void TakeDamage(int amount) => TakeDamage(amount, Vector3.zero, 0f);
 
     public void TakeDamage(int amount, Vector3 impact, float upwardLaunch)
     {
-        if (amount <= 0 || defeated) return;
+        if (amount <= 0 || IsDefeated) return;
 
-        currentHealth = Mathf.Max(0, currentHealth - amount);
-        Debug.Log($"{name}: {currentHealth}/{maxHealth} HP");
-
-        if (body != null && body.isKinematic == false)
+        CurrentHealth = Mathf.Max(0, CurrentHealth - amount);
+        if (body != null && !body.isKinematic)
             body.AddForce(impact + Vector3.up * upwardLaunch, ForceMode.Impulse);
 
-        if (currentHealth == 0)
-            Defeat();
+        if (CurrentHealth == 0) Defeat();
     }
 
     private void Defeat()
     {
-        defeated = true;
+        IsDefeated = true;
         if (destroyOnDefeat) Destroy(gameObject, 0.15f);
         else gameObject.SetActive(false);
     }
