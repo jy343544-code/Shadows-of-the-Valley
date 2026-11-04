@@ -1,0 +1,52 @@
+name: Android APK Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Assets/**'
+      - 'Packages/**'
+      - 'ProjectSettings/**'
+      - '.github/workflows/android-build.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Unity license secret
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          if [ -z "$UNITY_LICENSE" ]; then
+            echo "::error::Missing UNITY_LICENSE secret. Add your Unity Personal license XML in GitHub repository Settings > Secrets and variables > Actions > New repository secret."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Android APK with Unity
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: .
+          unityVersion: 6000.3.27f2
+          targetPlatform: Android
+          buildsPath: build
+          buildName: ShadowsOfTheValley
+          androidAppBundle: false
+          allowDirtyBuild: true
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shadows-of-the-Valley-Android-APK
+          path: build/Android/*.apk
+          if-no-files-found: error
+          retention-days: 14
