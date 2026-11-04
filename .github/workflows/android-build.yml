@@ -2,13 +2,6 @@ name: Android APK Build
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-    paths:
-      - 'Assets/**'
-      - 'Packages/**'
-      - 'ProjectSettings/**'
-      - '.github/workflows/android-build.yml'
 
 permissions:
   contents: read
@@ -23,7 +16,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         run: |
           if [ -z "$UNITY_LICENSE" ]; then
-            echo "::error::Missing UNITY_LICENSE secret. Add your Unity Personal license XML in GitHub repository Settings > Secrets and variables > Actions > New repository secret."
+            echo "::error::Missing UNITY_LICENSE secret. Add a valid Unity license XML in GitHub repository Settings > Secrets and variables > Actions > New repository secret."
             exit 1
           fi
 
