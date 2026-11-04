@@ -3,7 +3,7 @@ extends Node3D
 const PlayerScript = preload("res://scripts/player.gd")
 const EnemyScript = preload("res://scripts/enemy.gd")
 
-var player: CharacterBody3D
+var player: ValleyPlayer
 var camera_pivot: Node3D
 var joystick_vector := Vector2.ZERO
 var health_bar: ProgressBar
@@ -99,10 +99,9 @@ func _make_actor_mesh(actor: CharacterBody3D, color: Color, height: float) -> vo
 	actor.add_child(collision)
 
 func _spawn_player() -> void:
-	player = CharacterBody3D.new()
+	player = ValleyPlayer.new()
 	player.name = "Sekhem"
-	player.set_script(PlayerScript)
-	player.game = self
+		player.game = self
 	player.position = Vector3(0, 0.2, 5)
 	_make_actor_mesh(player, Color(0.12, 0.39, 0.42), 1.9)
 	add_child(player)
@@ -118,10 +117,9 @@ func _spawn_player() -> void:
 
 func _spawn_enemies() -> void:
 	for i in range(4):
-		var enemy := CharacterBody3D.new()
+		var enemy := ValleyEnemy.new()
 		enemy.name = "Shadow Raider %d" % (i + 1)
-		enemy.set_script(EnemyScript)
-		enemy.player = player
+				enemy.player = player
 		enemy.position = Vector3(-6.0 + float(i) * 4.0, 0.2, -5.0 - float(i % 2) * 2.0)
 		_make_actor_mesh(enemy, Color(0.25, 0.19, 0.24), 1.8)
 		add_child(enemy)
