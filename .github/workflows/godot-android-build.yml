@@ -1,0 +1,40 @@
+name: Godot Android APK Build
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "godot/**"
+      - ".github/workflows/godot-android-build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    name: Build Godot Android APK
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.7.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Godot project
+        working-directory: godot
+        run: |
+          godot --headless --path . --editor --quit
+
+      - name: Export Android APK
+        working-directory: godot
+        run: |
+          mkdir -p ../build
+          godot --headless --path . --export-debug "Android" ../build/ShadowsOfTheValley.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shadows-of-the-Valley-Godot-Android-APK
+          path: build/ShadowsOfTheValley.apk
+          if-no-files-found: error
+          retention-days: 14
