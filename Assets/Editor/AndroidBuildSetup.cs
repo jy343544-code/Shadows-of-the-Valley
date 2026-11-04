@@ -44,7 +44,11 @@ public static class AndroidBuildSetup
         player.AddComponent<PlayerCombat>();
         player.AddComponent<AirComboCombat>();
         player.AddComponent<ShadowTether>();
-        player.AddComponent<TargetLock>();
+        TargetLock targetLock = player.AddComponent<TargetLock>();
+        SetLayerMask(player.GetComponent<PlayerCombat>(), "enemyLayers", ~0);
+        SetLayerMask(player.GetComponent<AirComboCombat>(), "enemyLayers", ~0);
+        SetLayerMask(player.GetComponent<ShadowTether>(), "enemyLayers", ~0);
+        SetLayerMask(targetLock, "enemyLayers", ~0);
         player.GetComponent<Renderer>().sharedMaterial = MakeMaterial(new Color(0.12f, 0.17f, 0.19f));
 
         GameObject cameraObject = new GameObject("Main Camera");
