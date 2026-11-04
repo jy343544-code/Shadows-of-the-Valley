@@ -1,35 +1,44 @@
 # Cloud Android Build — Shadows of the Valley
 
-## What is now automated
-The repository contains a Unity 6.3 LTS project manifest, a generated greybox scene builder, and a GitHub Actions workflow that can build an Android APK and store it as a downloadable workflow artifact.
+## What is prepared
+- Unity 6.3 LTS project configuration.
+- Editor automation that creates a greybox Black Gate arena.
+- Android ARM64 APK build script.
+- GitHub Actions workflow that can build an APK and upload it as a downloadable artifact.
 
 The generated scene is a functional placeholder arena (capsule hero, training enemies, Gatekeeper boss, basic lighting). It is not the final realistic 3D art pass.
 
-## One-time Unity license requirement
-Unity's editor must be licensed even on a cloud build runner. The workflow expects a Unity Personal license XML stored as a GitHub Actions repository secret named `UNITY_LICENSE`.
+## Why the first cloud build stopped
+The GitHub Actions runner started successfully, then stopped before checking out or compiling the project because the repository does not yet contain a `UNITY_LICENSE` secret. The run log explicitly reported that the secret was empty. This is a licensing gate, not evidence of a C# compile error.
 
-Do not paste license XML, passwords, or access tokens into ChatGPT or commit them to the repository.
+The legacy GameCI activation-file action was tested and returned a deprecation error, so it has been removed rather than left as a broken workflow.
 
-To add it:
-1. Open the Unity ID account in a browser and activate Unity Personal on the account.
-2. Generate/export the Unity license XML using Unity's official manual activation process.
-3. Open this repository on GitHub.
-4. Go to **Settings → Secrets and variables → Actions → New repository secret**.
-5. Name it exactly `UNITY_LICENSE`, paste the XML as the value, and save.
+## One required account setup
+Unity Editor must be activated before a hosted runner can build. A valid Unity Personal license XML must be obtained through Unity's supported activation flow and stored as a GitHub Actions secret named `UNITY_LICENSE`.
 
-The GitHub Actions workflow will then be able to use that secret without exposing it in the repository.
+Do not paste license XML, Unity passwords, or access tokens into ChatGPT or commit them to the repository.
 
-## Start the build
+On GitHub mobile:
+1. Open this repository: https://github.com/jy343544-code/Shadows-of-the-Valley
+2. Open **Settings**.
+3. Open **Secrets and variables** → **Actions**.
+4. Tap **New repository secret**.
+5. Set the name to `UNITY_LICENSE`.
+6. Paste the valid Unity license XML as the value and save.
+
+If you do not already have a valid license XML, use Unity's currently supported licensing/activation process for your Unity Personal account. Unity's current GameCI guidance is here: https://game.ci/docs/github/activation
+
+## Start the APK build after licensing
 1. Open the repository's **Actions** tab.
 2. Select **Android APK Build**.
 3. Press **Run workflow** on branch `main`.
-4. When the run succeeds, open the run and download the artifact named `Shadows-of-the-Valley-Android-APK`.
-5. Extract the ZIP and install the APK on an Android device (allow installation from the browser/files app if Android asks).
+4. If the run succeeds, open it and download the artifact named `Shadows-of-the-Valley-Android-APK`.
+5. Extract the ZIP and install the APK on Android.
 
-A push to the Unity project files on `main` also triggers the workflow.
+The build workflow is manual-only until the Unity license secret is configured, so ordinary code updates will not create repeated failed build runs.
 
 ## Current limitations
 - The first build is a greybox gameplay prototype, not a finished PlayStation-quality game.
 - The repository's C# scripts have not yet been compiled in this environment.
-- Android APK generation requires the Unity license secret and a successful hosted runner.
-- Realistic character/monster models, final animation clips, sound, VFX, touch HUD, and device optimization are still separate production tasks.
+- APK generation is blocked until a valid Unity license secret is configured and the hosted build succeeds.
+- Realistic character/monster models, final animation clips, sound, VFX, touch HUD, and device optimization remain production tasks.
