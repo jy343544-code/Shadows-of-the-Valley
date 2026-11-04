@@ -12,7 +12,7 @@ This repository is an evolving Unity 6 gameplay prototype, not yet a complete Un
 
 ## Gameplay systems in the starter code
 - Camera-relative third-person movement
-- Mobile virtual joystick and touch camera input
+- Mobile virtual joystick, touch camera input, and on-screen combat HUD
 - Three-step melee combo and enemy knockback
 - Enemy health and basic chaser AI
 - Shadow Tether to pull lighter enemies
