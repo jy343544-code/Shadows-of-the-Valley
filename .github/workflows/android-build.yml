@@ -29,11 +29,11 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: .
-          unityVersion: 6000.3.27f2
           targetPlatform: Android
+          buildMethod: AndroidBuildSetup.BuildAndroid
           buildsPath: build
           buildName: ShadowsOfTheValley
-          androidAppBundle: false
+          androidExportType: androidPackage
           allowDirtyBuild: true
 
       - name: Upload APK
