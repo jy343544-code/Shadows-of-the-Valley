@@ -20,6 +20,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare Android export environment
+        run: |
+          apt-get update
+          apt-get install -y fontconfig
+          mkdir -p /github/home/.local/share/godot /github/home/.config/godot
+          cp -a /root/.local/share/godot/export_templates /github/home/.local/share/godot/
+          cp -a /root/.config/godot/. /github/home/.config/godot/
+          cat >> /github/home/.config/godot/editor_settings-4.7.tres <<'EOF'
+          [resource]
+          export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"
+          export/android/android_sdk_path = "/usr/lib/android-sdk"
+          export/android/debug_keystore = "/root/debug.keystore"
+          export/android/debug_keystore_user = "androiddebugkey"
+          export/android/debug_keystore_pass = "android"
+          export/android/force_system_user = false
+          export/android/timestamping_authority_url = ""
+          EOF
+          chmod -R a+rX /github/home/.local /github/home/.config
+
       - name: Validate Godot project
         working-directory: godot
         run: |
@@ -30,6 +49,7 @@ jobs:
         run: |
           mkdir -p ../build
           godot --headless --path . --export-debug "Android" ../build/ShadowsOfTheValley.apk
+          test -s ../build/ShadowsOfTheValley.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
