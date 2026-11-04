@@ -101,7 +101,7 @@ func _make_actor_mesh(actor: CharacterBody3D, color: Color, height: float) -> vo
 func _spawn_player() -> void:
 	player = ValleyPlayer.new()
 	player.name = "Sekhem"
-		player.game = self
+	player.game = self
 	player.position = Vector3(0, 0.2, 5)
 	_make_actor_mesh(player, Color(0.12, 0.39, 0.42), 1.9)
 	add_child(player)
