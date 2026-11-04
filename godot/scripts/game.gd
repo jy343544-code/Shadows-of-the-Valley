@@ -22,20 +22,15 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if is_instance_valid(player) and is_instance_valid(camera_pivot):
-		camera_pivot.global_position = camera_pivot.global_position.lerp(player.global_position + Vector3.UP * 1.55, delta * 8.0)
+		camera_pivot.global_position = camera_pivot.global_position.lerp(player.global_position + Vector3.UP * 1.35, delta * 8.0)
 		camera_pivot.rotation.y = camera_yaw
 		camera_pivot.rotation.x = camera_pitch
 
 func _build_world() -> void:
 	var world := WorldEnvironment.new()
 	var environment := Environment.new()
-	environment.background_mode = Environment.BG_SKY
-	var sky := Sky.new()
-	var sky_material := ProceduralSkyMaterial.new()
-	sky_material.sky_top_color = Color(0.12, 0.16, 0.22)
-	sky_material.sky_horizon_color = Color(0.72, 0.39, 0.19)
-	sky.sky_material = sky_material
-	environment.sky = sky
+	environment.background_mode = Environment.BG_COLOR
+	environment.background_color = Color(0.12, 0.16, 0.22)
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	environment.ambient_light_color = Color(0.55, 0.48, 0.39)
 	environment.ambient_light_energy = 0.7
@@ -107,13 +102,13 @@ func _spawn_player() -> void:
 	add_child(player)
 	camera_pivot = Node3D.new()
 	camera_pivot.name = "CameraPivot"
-	camera_pivot.position = player.position + Vector3.UP * 1.55
+	camera_pivot.position = player.position + Vector3.UP * 1.35
 	add_child(camera_pivot)
 	var camera := Camera3D.new()
-	camera.position = Vector3(0, 2.3, 6.8)
-	camera.rotation.x = -0.22
-	camera.current = true
+	camera.position = Vector3(0, 2.0, 5.2)
+	camera.rotation.x = -0.34
 	camera_pivot.add_child(camera)
+	camera.make_current()
 
 func _spawn_enemies() -> void:
 	for i in range(4):
