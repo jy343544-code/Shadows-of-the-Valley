@@ -39,6 +39,6 @@ The build workflow is manual-only until the Unity license secret is configured, 
 
 ## Current limitations
 - The first build is a greybox gameplay prototype, not a finished PlayStation-quality game.
-- The repository's C# scripts have not yet been compiled in this environment.
+- The repository's C# scripts have not yet been compiled in this environment. The generated scene now includes a basic on-screen touch HUD for movement and combat.
 - APK generation is blocked until a valid Unity license secret is configured and the hosted build succeeds.
-- Realistic character/monster models, final animation clips, sound, VFX, touch HUD, and device optimization remain production tasks.
+- Realistic character/monster models, final animation clips, sound, VFX polish, and device optimization remain production tasks.
